@@ -1,73 +1,50 @@
-// ==================== NAVBAR SCROLL EFFECT ====================
+// ==================== NAVBAR SCROLL ====================
 const navbar = document.getElementById('navbar');
 window.addEventListener('scroll', () => {
-    if (window.scrollY > 50) {
-        navbar.classList.add('scrolled');
-    } else {
-        navbar.classList.remove('scrolled');
-    }
+    navbar.classList.toggle('scrolled', window.scrollY > 50);
 });
 
-// ==================== MOBILE HAMBURGER MENU ====================
+// ==================== MOBILE MENU ====================
 const hamburger = document.getElementById('hamburger');
 const navLinks = document.getElementById('navLinks');
-hamburger.addEventListener('click', () => {
-    navLinks.classList.toggle('open');
-});
-
-// Close menu on link click
+hamburger.addEventListener('click', () => navLinks.classList.toggle('open'));
 document.querySelectorAll('.nav-link').forEach(link => {
-    link.addEventListener('click', () => {
-        navLinks.classList.remove('open');
-    });
+    link.addEventListener('click', () => navLinks.classList.remove('open'));
 });
 
-// ==================== ACTIVE NAV LINK ON SCROLL ====================
+// ==================== ACTIVE NAV LINK ====================
 const sections = document.querySelectorAll('section[id]');
 window.addEventListener('scroll', () => {
     let current = '';
     sections.forEach(section => {
-        const sectionTop = section.offsetTop - 100;
-        if (window.scrollY >= sectionTop) {
+        if (window.scrollY >= section.offsetTop - 100) {
             current = section.getAttribute('id');
         }
     });
     document.querySelectorAll('.nav-link').forEach(link => {
         link.classList.remove('active');
-        if (link.getAttribute('href') === '#' + current) {
-            link.classList.add('active');
-        }
+        if (link.getAttribute('href') === '#' + current) link.classList.add('active');
     });
 });
 
-// ==================== TRIAL FORM SUBMISSION ====================
+// ==================== FORM SUBMISSION ====================
 function handleTrialSubmit(event) {
     event.preventDefault();
-    
-    const name = document.getElementById('name').value;
-    const email = document.getElementById('email').value;
-    const phone = document.getElementById('phone').value;
-    const country = document.getElementById('country').value;
-    const course = document.getElementById('course').value;
-    const age = document.getElementById('age').value;
-    const message = document.getElementById('message').value;
-
-    const formData = { name, email, phone, country, course, age, message };
+    const formData = {
+        name: document.getElementById('name').value,
+        email: document.getElementById('email').value,
+        phone: document.getElementById('phone').value,
+        country: document.getElementById('country').value,
+        course: document.getElementById('course').value,
+        age: document.getElementById('age').value,
+        message: document.getElementById('message').value
+    };
     console.log('Trial Form Data:', formData);
-
-    // Success Alert
-    alert(`🎉 JazakAllah Khair, ${name}!\n\n✅ Your free trial has been booked.\n📞 We will contact you at ${phone} within 24 hours.\n📧 Confirmation sent to ${email}`);
-
-    // Reset Form
+    alert(`🎉 Thank you, ${formData.name}!\n\n✅ Your free trial has been booked!\n📞 We'll contact you at ${formData.phone} within 24 hours.\n📧 Confirmation sent to ${formData.email}`);
     document.getElementById('trialForm').reset();
 }
 
-// ==================== SMOOTH REVEAL ON SCROLL ====================
-const observerOptions = {
-    threshold: 0.1,
-    rootMargin: '0px 0px -50px 0px'
-};
-
+// ==================== SCROLL REVEAL ====================
 const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
         if (entry.isIntersecting) {
@@ -75,7 +52,7 @@ const observer = new IntersectionObserver((entries) => {
             entry.target.style.transform = 'translateY(0)';
         }
     });
-}, observerOptions);
+}, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
 
 document.querySelectorAll('.course-card, .feature-card, .testimonial-card, .step-card').forEach(el => {
     el.style.opacity = '0';
@@ -84,7 +61,7 @@ document.querySelectorAll('.course-card, .feature-card, .testimonial-card, .step
     observer.observe(el);
 });
 
-// ==================== SERVICE WORKER REGISTRATION ====================
+// ==================== SERVICE WORKER ====================
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
         navigator.serviceWorker.register('/sw.js')
